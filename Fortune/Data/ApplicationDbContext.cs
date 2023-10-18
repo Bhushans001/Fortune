@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Fortune.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Fortune.Data
 {
@@ -8,5 +9,7 @@ namespace Fortune.Data
         {
                 
         }
+
+        DbSet<Category> Category { get; set; }
     }
 }
