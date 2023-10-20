@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Fortune.Models
 {
@@ -7,7 +8,9 @@ namespace Fortune.Models
         [Key]
         public int Id { get; set; }
         [Required]
-        public string Name { get; set; }    
-        public int DisplayNUmber { get; set; }
+        [DisplayName("Category Name")]
+        public string Name { get; set; }
+        [DisplayName("Display Number")]
+        public int DisplayNumber { get; set; }
     }
 }
