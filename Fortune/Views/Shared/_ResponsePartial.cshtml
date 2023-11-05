@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* Style for the alert message */
+        .alert {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #36e351;
+            color: white;
+            padding: 40px; /* Increased padding for a larger size */
+            border-radius: 5px;
+            font-size: 25px; /* Increased font size for a larger text */
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .Error {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #e81f1f;
+            color: white;
+            padding: 40px; /* Increased padding for a larger size */
+            border-radius: 5px;
+            font-size: 25px; /* Increased font size for a larger text */
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        /* Style for the close button */
+        .close-button {
+            position: absolute;
+            color: #030303;
+            top: 0px;
+            left: 5px;
+            font-size: 30px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    @if(TempData["success"] != null)
+    {
+        <div class="alert" id="alertMessage">
+            <span class="close-button" onclick="closeAlertMessage()">&times;</span>
+            @TempData["success"]
+        </div>
+
+        <script>
+            // Function to close the alert message
+            function closeAlertMessage() {
+                var alertDiv = document.getElementById('alertMessage');
+                alertDiv.style.opacity = '0';
+            }
+
+            // Display the alert message
+            var alertDiv = document.getElementById('alertMessage');
+            alertDiv.style.opacity = '1';
+
+            // Automatically hide the alert after 5 seconds
+            setTimeout(function () {
+                closeAlertMessage();
+            }, 5000);
+        </script>
+    }    
+    @if(TempData["Error"] != null)
+    {
+        <div class="Error" id="alertMessage">
+            <span class="close-button" onclick="closeAlertMessage()">&times;</span>
+            @TempData["Error"]
+        </div>
+
+        <script>
+            // Function to close the alert message
+            function closeAlertMessage() {
+                var alertDiv = document.getElementById('alertMessage');
+                alertDiv.style.opacity = '0';
+            }
+
+            // Display the alert message
+            var alertDiv = document.getElementById('alertMessage');
+            alertDiv.style.opacity = '1';
+
+            // Automatically hide the alert after 5 seconds
+            setTimeout(function () {
+                closeAlertMessage();
+            }, 5000);
+        </script>
+    }
+</body>
+</html>

@@ -1,23 +1,24 @@
 ﻿@model Category
 
-<form method="post" action="Create">
+<form method="post">
     <div class="border p-0 mt-4">
         <div class="row pb-2">
-            <h2 class="text-primary"> create Category</h2>
+            <h2 class="text-primary"> Edit Category</h2>
         </div>
+        <input asp-for="Id" hidden/>
         <div class="mb-3 p-1">
             <label asp-for="Name" class="p-1"></label>
-            <input asp-for="Name" class="form-control" required/>
+            <input asp-for="Name" class="form-control" required />
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
         <div class="mb-3 p-1">
             <label asp-for="DisplayNumber" class="p-1"></label>
-            <input asp-for="DisplayNumber" class="form-control" required/>
+            <input asp-for="DisplayNumber" class="form-control" required />
             <span asp-validation-for="DisplayNumber" class="text-danger"></span>
         </div>
         <div class="row">
             <div class="col-6 col-md-3">
-                <button type="submit" class="btn btn-primary form-control">Create</button>
+                <button type="submit" class="btn btn-primary form-control">Update</button>
             </div>
             <div class="col-6 col-md-3">
                 <a asp-controller="Category" asp-action="Index" class="btn btn-outline-dark form-control">Back To List</a>
@@ -27,6 +28,6 @@
 </form>
 
 
-    @section Scripts{
-        <partial name="_ValidationScriptsPartial" />
-    }
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
