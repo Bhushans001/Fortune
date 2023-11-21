@@ -13,8 +13,16 @@ namespace Fortune.Controllers
         }
         public IActionResult Index()
         {
-            List<Category> Category = _dbContext.Category.ToList();
-            return View(Category);
+            try
+            {
+                List<Category> Category = _dbContext.Category.ToList();
+                return View(Category);
+            }
+            catch(Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return View();
+            }
         }
 
         public IActionResult Create()
