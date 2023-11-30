@@ -1,70 +1,209 @@
 ﻿@model List<Category>
 
 
-<div class="container">
-    <idv class="row pt-4 pb-2">
-        <div class="col-md-6">
-            <h2 class="text-primary">
-                Category List
-            </h2>
-        </div>
-        <div class="col-md-6 text-end pt-4 pb-2">
-            <a asp-controller="Category" asp-action="create" class="btn btn-outline-primary">
-                <i class="bi bi-plus-square"></i> Add New Category 
-            </a>
-        </div>
-    </idv>
-</div>
-    
-<body>
-    <table class="table table-bordered table-striped">
-        <thead class="bg-gradient">
-            <tr>
-                <th>
-                    Category
-                </th>
-                <th>
-                    Display Number
-                </th>
-                <th>
+    <style>
+    #selectAll {
+        transform: scale(1.5);
+        margin-right: 5px;
+    }
 
-                </th>
-            </tr>
-       </thead>
-    <tbody>
-            @foreach(var item in Model.OrderBy(X=>X.DisplayNumber))
-            {
-                <tr>
-                    <td>
-                        @item.Name
-                    </td>
-                    <td>
-                        @item.DisplayNumber
-                    </td>
-                    <td>
-                        <div class="w-75 btn-group" role="group">
-                            <a asp-controller="Category" asp-action="Edit" asp-route-Id="@item.Id" class="btn btn-primary mx-2">
-                                <i class="bi bi-pencil-square"></i> Edit
-                            </a>
-                            <a asp-controller="Category" asp-action="Delete" asp-route-Id="@item.Id" class="btn btn-danger mx-2">
-                                <i class="bi bi-trash"></i> Delete
-                            </a>
-                        </div>
-                    </td>
+    .recordCheckbox {
+        transform: scale(1.5);
+        margin-right: 5px;
+    }
+
+    input[type="checkbox"]:hover {
+        background-color: #f0052c;
+    }
+
+    #Deletebtn {
+        display : none;
+    }
+
+    #Editbtn {
+        display : none;
+    }
+
+    .btn-group-sm .btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+    </style>
+
+<div class="card shadow">
+    <div class="card-header bg-secondary">
+        <div class="container">
+            <idv class="row pt-4 pb-2">
+                <div class="col-md-12">
+                    <h2 class="text-light text-center">
+                        Category List
+                    </h2>
+                </div>                
+            </idv>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6 py-2 pb-2 btn-group">
+                <a>
+                    <i title="Edit" id="Addbtn" class="btn btn-dark bi bi-plus-square mx-1" onclick="AddFunction()"></i>
+                </a>
+                <a>
+                    <i title="Edit" id="Editbtn" class="btn btn-success bi bi-pencil-square mx-1" onclick="EditFunction()"></i>
+                </a>
+                <a>
+                    <i title="Delete" id="Deletebtn" class="btn btn-danger bi bi-trash mx-1" onclick="DeleteFunction()"></i>
+                </a>
+            </div>
+            <div class="col-md-6 text-end pt-2 pb-2">
+                <a asp-controller="Category" asp-action="create" class="btn btn-primary">
+                    <i class="bi bi-plus-square"></i> Add New Category
+                </a>
+            </div>
+        </div>
+        <table class="table table-bordered table-striped shadow">
+            <thead class="bg-gradient">
+                <tr>  
+                    <th class="text-center">
+                        <label>
+                            <input type="checkbox" id="selectAll" title="Select All" />
+                        </label>
+                    </th>
+                    <th>
+                        Category
+                    </th>
+                    <th>
+                        Display Number
+                    </th>
+                    <th>
+
+                    </th>
                 </tr>
-            }            
-    </tbody>       
-    </table>
-</body>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.OrderBy(X => X.DisplayNumber))
+                {
+                    <tr>
+                        <td class="text-center">
+                            <input type="checkbox" class="recordCheckbox" id="@item.Id" />
+                        </td>
+                        <td>
+                            @item.Name
+                        </td>
+                        <td>
+                            @item.DisplayNumber
+                        </td>
+                        <td>
+                            <div class="w-75 btn-group" role="group">
+                                <a asp-controller="Category" asp-action="Edit" asp-route-Id="@item.Id" class="btn btn-dark mx-2">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </a>
+                                <a asp-controller="Category" asp-action="Delete" asp-route-Id="@item.Id" class="btn btn-danger mx-2">
+                                    <i class="bi bi-trash"></i> Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
 
 
-<div class="row">
-    <div class="col-md-6">
-
-    </div>
-    <div class="col-md-6 text-end pt-5">
-        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary"> Back to Home Page</a>
+        <div class="row">
+            <div class="col-md-6">
+            </div>
+            <div class="col-md-6 text-end pt-2">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-primary"> Back to Home Page</a>
+            </div>
+        </div>
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+
+    function updateButtonVisibility() {
+        var checkboxes = document.querySelectorAll('.recordCheckbox');
+        var button = document.getElementById('Deletebtn');
+        var EditButton = document.getElementById('Editbtn');
+
+        // Check if any checkbox is selected
+        var anyCheckboxSelected = Array.from(checkboxes).filter(checkbox => checkbox.checked);
+
+        // Update button visibility based on checkbox selection
+        button.style.display = anyCheckboxSelected.length > 0 ? 'block' : 'none';
+        EditButton.style.display = anyCheckboxSelected.length === 1 ? 'block' : 'none';
+    }
+
+    $("#selectAll").change(function () {
+        $(".recordCheckbox").prop('checked', $(this).prop("checked"));
+        updateButtonVisibility();
+    });
+
+    $(".recordCheckbox").change(function () {
+        var select = document.querySelectorAll(".recordCheckbox");
+        var selectAll = document.getElementById("selectAll");
+        var cnt = select.length;
+        var cntcheck = 0;
+
+        for (var i = 0; i < cnt; i++) {
+            if (select[i].checked) {
+                cntcheck += 1;
+            }
+            else {
+                cntcheck -= 1;
+            }
+        }
+        
+        if (cnt == cntcheck) {
+            if (!selectAll.checked) {
+                $("#selectAll").prop('checked', true);;
+            }
+        }
+        else{
+            if (selectAll.checked) {
+                $("#selectAll").prop('checked', false);
+            }
+        }
+        updateButtonVisibility();
+    })
+
+    function AddFunction(){
+        var url = '/Category/Create'
+        window.location.href = url;
+    }
+
+    function EditFunction(){
+        var checkbox = document.querySelectorAll('.recordCheckbox');
+        var Ids = [];
+
+        for (var i = 0; i < checkbox.length; i++) {
+            if (checkbox[i].checked) {
+                Ids.push(checkbox[i].id);
+            }
+        }
+        var url1 = '/Category/Edit/' + Ids;
+        window.location.href = url;
+    }
+    function getSelectedRecordIds() {
+        var checkboxes = document.querySelectorAll('.recordCheckbox:checked');
+        var selectedRecordIds = Array.from(checkboxes).map(checkbox => checkbox.getAttribute('data-record-id'));
+        return selectedRecordIds;
+    }
+    function DeleteFunction() {
+        var checkbox = document.querySelectorAll('.recordCheckbox');
+
+        var Ids = [];
+
+
+            for (var i = 0; i < checkbox.length; i++) {
+                if (checkbox[i].checked) {
+                    Ids = checkbox[i].id;
+                }
+            }
+            var url = '/Category/Delete/' + Ids;
+            window.location.href = url;
+    }
+</script>
 

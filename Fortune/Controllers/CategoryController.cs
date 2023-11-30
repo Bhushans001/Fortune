@@ -24,7 +24,7 @@ namespace Fortune.Controllers
                 return View();
             }
         }
-
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
@@ -56,7 +56,7 @@ namespace Fortune.Controllers
                 return View();  
             }           
         }
-
+        [HttpGet]
         public IActionResult Edit(int? Id)
         {
             try
@@ -99,8 +99,8 @@ namespace Fortune.Controllers
                 if (ModelState.IsValid)
                 {
                     _dbContext.Category.Update(category);
-                    _dbContext.SaveChanges();
-                    TempData["success"] = "Category updated Successfully";
+                    var count =  _dbContext.SaveChanges();
+                    TempData["success"] = count + " Record(s) updated Successfully";
                     return RedirectToAction("Index");
                 }
                 return View();
