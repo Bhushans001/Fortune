@@ -1,7 +1,7 @@
-﻿using Fortune.Models;
+﻿using Fortunes.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Fortune.Data
+namespace Fortunes.DataAccess
 {
     public class ApplicationDBContext : DbContext
     {

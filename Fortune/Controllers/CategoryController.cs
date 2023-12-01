@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Fortune.Data;
-using Fortune.Models;
+using Fortunes.Models;
+using Fortunes.DataAccess;
 
 namespace Fortune.Controllers
 {

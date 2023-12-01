@@ -1,4 +1,4 @@
-using Fortune.Data;
+using Fortunes.DataAccess;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

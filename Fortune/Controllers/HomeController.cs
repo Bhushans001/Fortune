@@ -1,4 +1,4 @@
-using Fortune.Models;
+using Fortunes.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 

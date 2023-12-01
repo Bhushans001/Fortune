@@ -1,4 +1,4 @@
-namespace Fortune.Models
+namespace Fortunes.Models
 {
     public class ErrorViewModel
     {

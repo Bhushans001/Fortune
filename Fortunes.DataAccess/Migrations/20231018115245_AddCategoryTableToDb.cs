@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Fortune.Migrations
+namespace Fortunes.DataAccess.Migrations
 {
     /// <inheritdoc />
     public partial class AddCategoryTableToDb : Migration
