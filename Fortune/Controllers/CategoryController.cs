@@ -1,13 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Fortunes.Models;
 using Fortunes.DataAccess;
+using Fortunes.DataAccess.Repository.IRepository;
+using NuGet.Protocol.Core.Types;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 
 namespace Fortune.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ApplicationDBContext _dbContext;
-        public CategoryController(ApplicationDBContext dbContext)
+        private readonly IUnitOfWork _dbContext;
+        public CategoryController(IUnitOfWork dbContext)
         {
             _dbContext = dbContext;
         }
@@ -15,10 +18,10 @@ namespace Fortune.Controllers
         {
             try
             {
-                List<Category> Category = _dbContext.Category.ToList();
+                var Category = _dbContext.Category.GetAll();
                 return View(Category);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
                 return View();
@@ -34,18 +37,18 @@ namespace Fortune.Controllers
         {
             try
             {
-                var Name = (from obj in _dbContext.Category
-                           where obj.Name == Category.Name  
-                           select obj.Name).FirstOrDefault();   
+                var Name = (from obj in _dbContext.Category.GetAll()
+                            where obj.Name == Category.Name
+                            select obj.Name).FirstOrDefault();
 
-                if (Name != null)
-                {
-                    TempData["Error"] = "Category Name already Exists !";
-                    return View();
-                }
+                //if (Name != null)
+                //{
+                //    TempData["Error"] = "Category Name already Exists !";
+                //    return View();
+                //}
 
                 _dbContext.Category.Add(Category);
-                _dbContext.SaveChanges();
+                _dbContext.save();
 
                 TempData["success"] = "Category Created Successfully";
                 return RedirectToAction("Index");
@@ -53,10 +56,9 @@ namespace Fortune.Controllers
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
-                return View();  
-            }           
+                return View();
+            }
         }
-        [HttpGet]
         public IActionResult Edit(int? Id)
         {
             try
@@ -66,7 +68,7 @@ namespace Fortune.Controllers
                     TempData["Error"] = "Please check again something is Wrong";
                     return View();
                 }
-                Category? category = _dbContext.Category.FirstOrDefault(x => x.Id == Id);
+                Category? category = _dbContext.Category.Get(x => x.Id == Id);
                 if (category == null)
                 {
                     TempData["Error"] = "Please check again something is Wrong";
@@ -77,7 +79,7 @@ namespace Fortune.Controllers
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
-                return View();  
+                return View();
             }
         }
 
@@ -86,21 +88,17 @@ namespace Fortune.Controllers
         {
             try
             {
-                var Name = (from oj in _dbContext.Category
-                                  where oj.Name == category.Name
-                                  && oj.Id != category.Id
-                                  select oj.Name).FirstOrDefault();
-
+                var Name = _dbContext.Category.Get(x => x.Id != category.Id && x.Name == category.Name);
                 if (Name != null)
                 {
-                        TempData["Error"] = "Category Name Already Exists !";
-                        return View();
+                    TempData["Error"] = "Category Name Already Exists !";
+                    return View();
                 }
                 if (ModelState.IsValid)
                 {
-                    _dbContext.Category.Update(category);
-                    var count =  _dbContext.SaveChanges();
-                    TempData["success"] = count + " Record(s) updated Successfully";
+                    _dbContext.Category.update(category);
+                    _dbContext.save();
+                    TempData["success"] = "Record(s) updated Successfully";
                     return RedirectToAction("Index");
                 }
                 return View();
@@ -109,34 +107,89 @@ namespace Fortune.Controllers
             {
                 TempData["Error"] = ex.Message;
                 return View();
-            }           
+            }
         }
 
 
         public IActionResult Delete(int? Id)
         {
-            if (Id == null || Id == 0)
+            try
             {
-                return NotFound();
+                if (Id == null || Id == 0)
+                {
+                    return NotFound();
+                }
+                Category? category = _dbContext.Category.Get(x => x.Id == Id);
+                if (category == null)
+                {
+                    TempData["Error"] = "There is no data to delete";
+                    return View();
+                }
+
+                return View(category);
             }
-            Category? category = _dbContext.Category.FirstOrDefault(x => x.Id == Id);
-            if (category == null)
+            catch (Exception ex)
             {
-                TempData["Error"] = "There is no data to delete";
+                TempData["error"] = ex.Message;
                 return View();
             }
 
-            return View(category);
         }
 
-        [HttpPost,ActionName("Delete")]
+        [HttpPost, ActionName("Delete")]
         public IActionResult DeletePost(int? Id)
         {
-            Category? category = _dbContext.Category.Find(Id);
-            _dbContext.Category.Remove(category);
-            _dbContext.SaveChanges();
-            TempData["success"] = "Category Deleted Successfully";
-            return RedirectToAction("Index");
+            try
+            {
+                Category? category = _dbContext.Category.Get(x => x.Id == Id);
+                _dbContext.Category.Delete(category);
+                _dbContext.save();
+                TempData["success"] = " Category Deleted Successfully";
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                TempData["error"] = ex.InnerException.Message;
+                return View();
+            }
+        }
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            try
+            {
+                var Category = _dbContext.Category.GetAll();
+                return Json(new { data = Category });
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return View();  
+            }
+        }
+
+
+        [HttpDelete]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                var RecordTodelete = _dbContext.Category.Get(x => x.Id == id);
+
+                if(RecordTodelete == null)
+                {
+                    return Json(new { success = false, Message = "Unable to delete !" });
+                }
+
+                _dbContext.Category.Delete(RecordTodelete);
+                _dbContext.save();
+                return Json(new { success = true, Message = "Record Deleted Successfully" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, ex.Message });
+            }
         }
     }
 }

@@ -5,11 +5,16 @@ VisualStudioVersion = 17.8.34112.27
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fortune", "Fortune\Fortune.csproj", "{CF123466-4FD6-4AB4-918E-C2EB87827A9E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fortunes.DataAccess", "Fortunes.DataAccess\Fortunes.DataAccess.csproj", "{6BD46263-A196-42AE-93FA-C811538443B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fortunes.DataAccess", "Fortunes.DataAccess\Fortunes.DataAccess.csproj", "{6BD46263-A196-42AE-93FA-C811538443B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fortunes.Models", "Fortunes.Models\Fortunes.Models.csproj", "{B249E093-A63C-405A-8876-F942D1C8C5EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fortunes.Models", "Fortunes.Models\Fortunes.Models.csproj", "{B249E093-A63C-405A-8876-F942D1C8C5EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fortunes.Utility", "Fortunes.Utility\Fortunes.Utility.csproj", "{4AF190B0-1C54-45F4-B1F0-5F6CEAA43533}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fortunes.Utility", "Fortunes.Utility\Fortunes.Utility.csproj", "{4AF190B0-1C54-45F4-B1F0-5F6CEAA43533}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FA3658CD-4F0A-4127-8F0B-0BF2CED36D46}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

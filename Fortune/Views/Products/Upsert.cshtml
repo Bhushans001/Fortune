@@ -1,0 +1,95 @@
+﻿@model ProductVM
+
+<div class="card shadow my-4">
+    <div class="card-header bg-gradient bg-secondary">
+        <div class="row text-center">
+            <h2 class="text-light">@(Model.product.Id != 0 ? "Update" : "Create")  Product</h2>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <form method="post" action="Upsert" enctype="multipart/form-data">
+            <div class="border p-3">
+                <input asp-for="product.Id" hidden/>
+                <input asp-for="product.ImageUrl" hidden/>
+                    <div class="row">
+                        <div class="form-floating py-2 col-4">
+                            <input asp-for="product.Title" class="form-control border-0 shadow" required />
+                            <label asp-for="product.Title" class="ms-2"></label>
+                            <span asp-validation-for="product.Title" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating py-2 col-4">
+                            <input asp-for="product.Author" class="form-control border-0 shadow" required />
+                            <label asp-for="product.Author" class="ms-2"></label>
+                            <span asp-validation-for="product.Author" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating py-2 col-4">
+                            <input asp-for="product.ISBN" class="form-control border-0 shadow" required />
+                            <label asp-for="product.ISBN" class="ms-2"></label>
+                            <span asp-validation-for="product.ISBN" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-floating py-2 col-4">
+                            <input asp-for="product.Description" class="form-control border-0 shadow" required />
+                            <label asp-for="product.Description" class="ms-2"></label>
+                            <span asp-validation-for="product.Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating py-2 col-4">
+                            <input asp-for="product.ListPrice" class="form-control border-0 shadow" required />
+                            <label asp-for="product.ListPrice" class="ms-2"></label>
+                            <span asp-validation-for="product.ListPrice" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating py-2 col-4">
+                            <input asp-for="product.Price" class="form-control border-0 shadow" required />
+                            <label asp-for="product.Price" class="ms-2"></label>
+                            <span asp-validation-for="product.Price" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-floating py-2 col-4">
+                            <input asp-for="product.Price50" class="form-control border-0 shadow" required />
+                            <label asp-for="product.Price50" class="ms-2"></label>
+                            <span asp-validation-for="product.Price50" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating py-2 col-4">
+                            <input asp-for="product.List100" class="form-control border-0 shadow" required />
+                            <label asp-for="product.List100" class="ms-2"></label>
+                            <span asp-validation-for="product.List100" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating py-2 col-4">
+                            <select asp-for="product.CategoryId" asp-items="@Model.Categorylist" class="form-select border-0 shadow" required>
+                                <option disabled selected>-- select --</option>
+                            </select>
+                            <label asp-for="product.CategoryId" class="ms-2"></label>
+                            <span asp-validation-for="product.CategoryId" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating py-2 col-4">
+                            <input type="file" name="file" class="form-control border-0 shadow" />
+                            <label asp-for="product.ImageUrl" class="ms-2"></label>
+                        </div>
+                    </div>
+                <div class="row pt-3">
+                    <div class="col-6 col-md-3">
+                        @if(Model.product.Id == 0 || Model.product.Id == null)
+                        {
+                            <button type="submit" class="btn btn-primary form-control">Create</button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-primary form-control">Update</button>
+                        }
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a asp-controller="Products" asp-action="Index" class="btn btn-outline-dark form-control">Back To List</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
