@@ -74,8 +74,17 @@ namespace Fortune.Controllers
                 if(file != null)
                 {
                     string filename = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                    string productpath = Path.Combine(wwwrootpath, @"Images\Products");                   
+                    string productpath = Path.Combine(wwwrootpath, @"Images\Products");
 
+                    if (!string.IsNullOrEmpty(obj.product.ImageUrl))
+                    {
+                        var imgToBeDeleted = Path.Combine(wwwrootpath,obj.product.ImageUrl);
+
+                        if (System.IO.File.Exists(imgToBeDeleted))
+                        {
+                            System.IO.File.Delete(imgToBeDeleted);
+                        }
+                    }
                     using(var filestream = new FileStream(Path.Combine(productpath,filename),FileMode.Create))
                     {
                         file.CopyTo(filestream);    
