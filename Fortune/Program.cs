@@ -2,6 +2,7 @@ using Fortunes.DataAccess;
 using Fortunes.DataAccess.Repository;
 using Fortunes.DataAccess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,8 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWorkImpl>();
 
 builder.Services.AddDbContext<ApplicationDBContext>(options=>
             options.UseSqlServer(builder.Configuration.GetConnectionString("Connection")));
+builder.Services.AddRazorPages();   
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDBContext>();
 
 var app = builder.Build();
 
@@ -27,6 +30,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.MapRazorPages();
+app.UseAuthentication();    
 app.UseAuthorization();
 
 app.MapControllerRoute(
