@@ -2,7 +2,10 @@ using Fortunes.DataAccess;
 using Fortunes.DataAccess.Repository;
 using Fortunes.DataAccess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Identity;
+using Fortunes.Utility;
+using Fortune.Areas.Identity.Pages.Account;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,8 +15,21 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWorkImpl>();
 
 builder.Services.AddDbContext<ApplicationDBContext>(options=>
             options.UseSqlServer(builder.Configuration.GetConnectionString("Connection")));
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultTokenProviders();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = $"/Identity/Account/Login";
+    options.LogoutPath = $"/Identity/Account/Logout";
+    options.AccessDeniedPath = $"/identity/Account/AccessDenied";
+});
+
+
 builder.Services.AddRazorPages();   
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDBContext>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWorkImpl>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
+    
 
 var app = builder.Build();
 

@@ -1,11 +1,13 @@
 using Fortunes.DataAccess;
 using Fortunes.DataAccess.Repository.IRepository;
 using Fortunes.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace Fortune.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

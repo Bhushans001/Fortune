@@ -4,9 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using Fortunes.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
+using Fortunes.Utility;
 
 namespace Fortune.Controllers
 {
+    [Authorize]
+    [Authorize(Roles = SD.Role_Admin)]
     public class ProductsController : Controller
     {
         private readonly IUnitOfWork _UnitOfWork;

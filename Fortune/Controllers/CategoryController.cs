@@ -4,9 +4,13 @@ using Fortunes.DataAccess;
 using Fortunes.DataAccess.Repository.IRepository;
 using NuGet.Protocol.Core.Types;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
+using Microsoft.AspNetCore.Authorization;
+using Fortunes.Utility;
 
 namespace Fortune.Controllers
 {
+    [Authorize]
+    [Authorize(Roles = SD.Role_Admin)]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _dbContext;
