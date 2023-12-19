@@ -20,11 +20,11 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkSto
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
     options.LoginPath = $"/Identity/Account/Login";
     options.LogoutPath = $"/Identity/Account/Logout";
     options.AccessDeniedPath = $"/identity/Account/AccessDenied";
 });
-
 
 builder.Services.AddRazorPages();   
 builder.Services.AddScoped<IUnitOfWork, UnitOfWorkImpl>();
