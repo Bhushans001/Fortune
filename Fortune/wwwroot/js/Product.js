@@ -2,56 +2,48 @@
 
 var datatable;
 
-function loaddatatable() {
-    datatable = $('#tbldata').DataTable({
+
+function loadData(tableId, apiUrl, columns) {
+    datatable = $(`#${tableId}`).DataTable({
         ajax: {
-            url: '/Products/GetAll'
+            url: apiUrl
         },
-        columns: [
-            { data: 'title', "width": "15%" },
-            { data: 'isbn', "width": "15%" },
-            { data: 'author', "width": "15%" },
-            { data: 'listPrice', "width": "15%" },
-            { data: 'category.name', "width": "15%" },
-            {
-                data: 'id',
-                "render": function (data) {
-                    return `<div class="w-75 btn-group" role="group">
+        columns: columns
+    });
+}
+
+
+var ProductsColumns = [
+    { data: 'title', "width": "15%" },
+    { data: 'isbn', "width": "15%" },
+    { data: 'author', "width": "15%" },
+    { data: 'listPrice', "width": "15%" },
+    { data: 'category.name', "width": "15%" },
+    {
+        data: 'id',
+        "render": function (data) {
+            return `<div class="w-75 btn-group" role="group">
                     <a href="/Products/Upsert?id=${data}" title="Edit" class="btn btn-primary bi-pencil-square mx-2">Edit</a>
                     <a onClick=Delete('/Products/delete?id=${data}') title="Delete" class="btn btn-danger bi bi-trash mx-2">Delete</a>
                     </div>`
-                },
-                "width": "20%"
-            }
-        ]
-    });
-}
-
-
-    
-function loaddatatablecategory() {    
-
-    datatable = $('#tbldatacat').DataTable({
-        ajax: {
-            url: '/Category/GetAll',
-            dataSrc: 'data'
         },
-        columns: [
-            { data: 'name', "width": "30%" },
-            { data: 'displayNumber', "width": "20%" },
-            {
-                data: 'id',
-                "render": function (data) {
-                    return `<div class="w-75 btn-group" role="group">
-                    <a href="/Category/Edit?id=${data}" title="Edit" class="btn btn-primary bi-pencil-square mx-2">Edit</a>
-                    <a onClick=Delete('/Category/delete?id=${data}') title="Delete" class="btn btn-danger bi bi-trash mx-2">Delete</a>
-                    </div>`
-                },
-                "width": "20%"
-            }
-        ]
-    });
-}
+        "width": "20%"
+    }
+];
+
+
+var CategoryColumns = [
+    { data: 'name', "width": "30%" },
+    { data: 'displayNumber', "width": "20%" }, {
+        data: 'id',
+        "render": function (data) {
+            return `<div class="w-75 btn-group" role="group">
+            <a href="/Category/Edit?id=${data}" title="Edit" class="btn btn-primary bi-pencil-square mx-2"> Edit</a>
+            <a onClick=Delete('/Category/delete?id=${data}') title="Delete" class="btn btn-danger bi bi-trash mx-2">delete</a>
+            </div>`
+        }
+    }
+]
 
 
 function Delete(url) {
@@ -90,5 +82,4 @@ function Delete(url) {
         }
     });
 }
-
 
